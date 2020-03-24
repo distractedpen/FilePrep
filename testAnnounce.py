@@ -21,8 +21,7 @@ text = "This is the text for the post! #1"
 
 def post_to_Classroom(service, courseID, text):
     body = {
-        'text': text#,
-        #'scheduledTime': schedule_time
+        'text': text
     }
     results = service.courses().announcements().create(courseId=courseID, body=body).execute()
     return
