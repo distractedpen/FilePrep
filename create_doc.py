@@ -4,12 +4,6 @@ from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 import time
 from datetime import datetime, date, timedelta
 
-#start_date = str(date(2020, 3, 9))[5:].replace('-','/') 
-start_date = date(2020, 3, 9)
-end_date = start_date + timedelta(days=4)
-
-document = Document()
-
 def format_style(run, font = "Calibri", size = 18, style = None):
     run.font.name = font
     run.font.size = Pt(size)
@@ -21,22 +15,22 @@ def date_to_string(date):
     return str(date)[5:].replace('-','/')
 
 
-def create_Title(start_date, end_date):
+def create_Title(document, section, start_date):
     title = document.add_paragraph()
-    title_text = title.add_run("ALG 1 - Lesson Plans - {0} - {1}".format(date_to_string(start_date), date_to_string(end_date)))
+    title_text = title.add_run("{0} Lesson Plans - {1} to {2}.docx".format(section, start_date.strftime("%b %d"), (start_date + timedelta(days=4)).strftime("%b %d")))
     title.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER 
     format_style(title_text, "Calibri", 18, 'underline')
     return
 
-def create_day_schedule(date, item1, item2):
+def create_day_schedule(document, date, item1, item2):
     heading = document.add_paragraph()
     style = heading.add_run(date)
     format_style(style, "Calibri", 18, 'underline')
-    create_line_item(item1)
-    create_line_item(item2)
+    create_line_item(document, item1)
+    create_line_item(document, item2)
     return
 
-def create_line_item(item):
+def create_line_item(document, item):
     line = document.add_paragraph()
     line.style = 'List Bullet'
     line_style = line.add_run(item)
@@ -56,14 +50,18 @@ def weekday_num(date):
     if (day == 4):
         return "Friday "
 
-create_Title(start_date, end_date)
-    
-current_day = start_date
-i = 0
-while(i < 5):
-    create_day_schedule(weekday_num(current_day)+date_to_string(current_day),
-                        "This is Item 1", "This is Item 2")
-    current_day += timedelta(days=1)
-    i += 1
 
-document.save("test.docx")
+def create_document(start_date, section, activity_list, homework_list):
+    document = Document()
+    start_date = start_date
+    create_Title(document, section, start_date)
+    current_day = start_date
+    i = 0
+    while(i < 5):
+        create_day_schedule(document, current_day.strftime("%A %m/%d"),
+                            activity_list.pop(0), homework_list.pop(0))
+        current_day += timedelta(days=1)
+        i += 1
+    file_name = "Lesson Plans - {0} to {1}.docx".format(start_date.strftime("%b %d"), (start_date + timedelta(days=4)).strftime("%b %d"))
+    document.save(file_name)
+    return file_name
