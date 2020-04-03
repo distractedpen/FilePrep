@@ -18,8 +18,9 @@ class Application(tk.Frame):
             #doc.create_document(start date, activityList, homeworkList)
             activitylist = [a1.get(), a2.get(), a3.get(), a4.get(), a5.get()]
             homeworklist = [h1.get(), h2.get(), h3.get(), h4.get(), h5.get()]
+            section = str(v.get())
             start_date = datetime(year=int(year.get()), month=int(month.get()), day=int(day.get()))
-            file_name =doc.create_document(start_date, str(section), activitylist, homeworklist)
+            file_name =doc.create_document(start_date, section, activitylist, homeworklist)
             
             top = tk.Toplevel(self)
             top.title("Result...")
@@ -50,9 +51,14 @@ class Application(tk.Frame):
         b.pack()
 
         ##Make a Radio Button to Choose Algebra 1 or Algebra 2 Section
-        # section = tk.StringVar()
-        # sections = tk.Radiobutton(f_top, variable=section, value=[])
-        # sections.pack(side=tk.BOTTOM)
+        v = tk.StringVar()
+        v.set("Algebra 1")
+        sections = [
+            ("Algebra 1", "Algebra 1"),
+            ("Algebra 2", "Algebra 2")
+            ]
+        for val, section in sections:
+            tk.Radiobutton(f_top, text=section, padx=5, variable=v, value=val).pack(anchor=tk.W)
         #End Top Frame
         
         #Start Left Frame
