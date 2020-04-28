@@ -20,7 +20,7 @@ class Application(tk.Frame):
             homeworklist = [h1.get(), h2.get(), h3.get(), h4.get(), h5.get()]
             section = str(v.get())
             start_date = datetime(year=int(year.get()), month=int(month.get()), day=int(day.get()))
-            file_name =doc.create_document(start_date, section, activitylist, homeworklist)
+            file_name = doc.create_document(start_date, section, activitylist, homeworklist)
             
             top = tk.Toplevel(self)
             top.title("Result...")

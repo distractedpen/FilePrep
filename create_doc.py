@@ -17,7 +17,7 @@ def date_to_string(date):
 
 def create_Title(document, section, start_date):
     title = document.add_paragraph()
-    title_text = title.add_run("{0} Lesson Plans - {1} to {2}.docx".format(section, start_date.strftime("%b %d"), (start_date + timedelta(days=4)).strftime("%b %d")))
+    title_text = title.add_run("{0} Lesson Plans - {1} to {2}".format(section, start_date.strftime("%b %d"), (start_date + timedelta(days=4)).strftime("%b %d")))
     title.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER 
     format_style(title_text, "Calibri", 18, 'underline')
     return
@@ -62,6 +62,6 @@ def create_document(start_date, section, activity_list, homework_list):
                             activity_list.pop(0), homework_list.pop(0))
         current_day += timedelta(days=1)
         i += 1
-    file_name = "Lesson Plans - {0} to {1}.docx".format(start_date.strftime("%b %d"), (start_date + timedelta(days=4)).strftime("%b %d"))
-    document.save(file_name)
+    file_name = "Lesson Plans - {0} to {1}".format(start_date.strftime("%b %d"), (start_date + timedelta(days=4)).strftime("%b %d"))
+    document.save(file_name + ".docx")
     return file_name
